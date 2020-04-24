@@ -7,9 +7,12 @@ d3.json("/samples.json", function(data)
 
     //populate dropdown with IDs
     var optionID = []
+    //get data from the selection
+    var dropOption = d3.select("#selDataset");
+    //populate dropdown menu with all of the IDs
     for (j = 0;j < samples.length;j++)
     {
-        var dropOption = d3.select("#selDataset")
+        dropOption
         .append("option").
         text(samples[j].id).
         attr("value",samples[j].id);
@@ -36,8 +39,8 @@ d3.json("/samples.json", function(data)
     //values
     var sampleValues = samples[0].sample_values;
     
-    //bar chart
-    var trace1 = {
+    //bar chart -  turn into a helper function?
+    var traceBar = {
         //set ID to string  to read as labels
         x: sampleValues.slice(0,10),
         y: otuIDstring.slice(0,10),
@@ -49,16 +52,16 @@ d3.json("/samples.json", function(data)
     };
   
     //this is an array and allows for you to pass  more than one trace at a time
-    var data = [trace1];
+    var dataBar = [traceBar];
   
-    var layout = {
+    var layoutBar = {
         title: "Bar Chart"        
     };
   
     //go to the html item with id called plot so know where to place it
-    Plotly.newPlot("bar", data, layout);
+    Plotly.newPlot("bar", dataBar, layoutBar);
 
-    //bubble chart
+    //bubble chart - turn into helper function?
     var traceBubble = {
         x: otuIDs,
         y: sampleValues,
@@ -82,6 +85,32 @@ d3.json("/samples.json", function(data)
       };
       
       Plotly.newPlot('bubble', dataBubble, layoutBubble);
+
+      //display sample meta data
+      //read in meta data
+      var patientMeta = data.metadata;
+      //access the panel body
+      var sampleMetaData = d3.select("#sample-metadata");
+      //populate panel body - turn into a helper function?
+      sampleMetaData
+        .append("p")
+        .text(`id:${patientMeta[0].id}\n
+        ethnicity:${patientMeta[0].ethnicity}\n
+        gender: ${patientMeta[0].gender}\n
+        age:${patientMeta[0].age}\n
+        location:${patientMeta[0].location} \n
+        bbtype:${patientMeta[0].bbtype}\n
+        wfreq:${patientMeta[0].wfreq}`);
+
+      // if (patientMetaArray.includes(d3.select("#selDataset")))
+      // {
+      //   console.log(indexOf(patientMetaArray.id))
+      // }
+      // while(patientMeta.includes(dropOption.text))
+      // {
+      //   console.log(data.metadata[dropOption]);
+      //   break;
+      // }
 });
 
 
