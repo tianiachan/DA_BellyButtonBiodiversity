@@ -3,9 +3,9 @@ var sampleMetadata = [];
 //use d3 to read in json
 // Local computer Json load
 // d3.json("/samples.json", function (data) {
-  
+
 // Github Json Load
-d3.json("./DA_BellyButtonBiodiversity/samples.json", function (data) {
+d3.json("/DA_BellyButtonBiodiversity/samples.json", function (data) {
   //sample data
   samples = data.samples;
   //metadata data
