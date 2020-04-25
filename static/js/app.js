@@ -1,116 +1,158 @@
+var samples = [];
+var sampleMetadata = [];
 //use d3 to read in json
-d3.json("/samples.json", function(data) 
+d3.json("/samples.json", function (data) 
 {
-        
-    //sample data
-    var samples = data.samples;
-
-    //populate dropdown with IDs
-    var optionID = []
-    //get data from the selection
-    var dropOption = d3.select("#selDataset");
-    //populate dropdown menu with all of the IDs
-    for (j = 0;j < samples.length;j++)
+  //sample data
+  samples = data.samples;
+  //metadata data
+  sampleMetadata = data.metadata;
+  //populate dropdown with IDs
+  var optionID = []
+  //get data from the selection
+  var dropOption = d3.select("#selDataset");
+  //populate dropdown menu with all of the IDs using forEach
+  samples.forEach(sample => 
     {
-        dropOption
+      //using dropdown, append the text and value as the id
+      dropOption
         .append("option").
-        text(samples[j].id).
-        attr("value",samples[j].id);
-        //append ids
-        optionID.push(samples[j].id);
-    }
-    //ids
-    //declare empty array
-    var otuIDs = [];
-    var otuIDstring= [];
-    //get the first 10 since those are the highest OTU
-    for ( i = 0; i <samples[0].otu_ids.length; i++)
-    {
-        //put OTU in front of the ID and put to string
-        var tempID = samples[0].otu_ids[i].toString();
-        //push to array
-        otuIDs.push(tempID);
-        otuIDstring.push("OTU "+ tempID);
-    }
-
-    //labels
-    var otuLabels = samples[0].otu_labels;
-
-    //values
-    var sampleValues = samples[0].sample_values;
-    
-    //bar chart -  turn into a helper function?
-    var traceBar = {
-        //set ID to string  to read as labels
-        x: sampleValues.slice(0,10),
-        y: otuIDstring.slice(0,10),
-        mode: 'markers',
-        marker: {size:16},
-        text: otuIDstring.slice(0,10),
-        type: "bar",
-        orientation: "h"
-    };
-  
-    //this is an array and allows for you to pass  more than one trace at a time
-    var dataBar = [traceBar];
-  
-    var layoutBar = {
-        title: "Bar Chart"        
-    };
-  
-    //go to the html item with id called plot so know where to place it
-    Plotly.newPlot("bar", dataBar, layoutBar);
-
-    //bubble chart - turn into helper function?
-    var traceBubble = {
-        x: otuIDs,
-        y: sampleValues,
-        mode: 'markers',
-        marker: 
-        {
-          size: sampleValues,
-          color: otuIDs
-        },
-        text: otuLabels
-      };
-      
-      var dataBubble = [traceBubble];
-      
-      var layoutBubble = {
-        title: "Bubble Chart",
-        showlegend: false,
-        height: 600,
-        width: 600,
-        xaxis: {title: "OTU ID"}
-      };
-      
-      Plotly.newPlot('bubble', dataBubble, layoutBubble);
-
-      //display sample meta data
-      //read in meta data
-      var patientMeta = data.metadata;
-      //access the panel body
-      var sampleMetaData = d3.select("#sample-metadata");
-      //populate panel body - turn into a helper function?
-      sampleMetaData
-        .append("p")
-        .text(`id:${patientMeta[0].id}\n
-        ethnicity:${patientMeta[0].ethnicity}\n
-        gender: ${patientMeta[0].gender}\n
-        age:${patientMeta[0].age}\n
-        location:${patientMeta[0].location} \n
-        bbtype:${patientMeta[0].bbtype}\n
-        wfreq:${patientMeta[0].wfreq}`);
-
-      // if (patientMetaArray.includes(d3.select("#selDataset")))
-      // {
-      //   console.log(indexOf(patientMetaArray.id))
-      // }
-      // while(patientMeta.includes(dropOption.text))
-      // {
-      //   console.log(data.metadata[dropOption]);
-      //   break;
-      // }
+        text(sample.id).
+        attr("value", sample.id);
+      // append ids for future use?
+      optionID.push(sample.id);
+    });
 });
 
+// helper to print metadata to the panel on html
+function printMetadata(patientMeta) 
+{
+  //access the panel body
+  var pulledMetaData = d3.select("#sample-metadata");
+  //populate panel body - turn into a helper function?
+  pulledMetaData
+    .append("p")//append p to make new line every time - better solution?
+    .text(`id: ${patientMeta.id}`)
+    .append("p")
+    .text(`ethnicity: ${patientMeta.ethnicity}`)
+    .append("p")
+    .text(`gender: ${patientMeta.gender}`)
+    .append("p")
+    .text(`age: ${patientMeta.age}`)
+    .append("p")
+    .text(`location: ${patientMeta.location}`)
+    .append("p")
+    .text(`bbtype: ${patientMeta.bbtype}`)
+    .append("p")
+    .text(`wfreq: ${patientMeta.wfreq}`);
+}
 
+//helper for bubble chart population
+function makeBubble(otuIDs, otuLabels, sampleValues) 
+{
+  //trace for bubble chart
+  var traceBubble =
+  {
+    x: otuIDs,
+    y: sampleValues,
+    mode: 'markers',
+    marker:
+    {
+      size: sampleValues,
+      color: otuIDs
+    },
+    text: otuLabels
+  };
+
+  var dataBubble = [traceBubble];
+
+  //make layout
+  var layoutBubble =
+  {
+    title: "Bubble Chart",
+    showlegend: false,
+    height: 600,
+    width: 600,
+    xaxis: { title: "OTU ID" }
+  };
+  //populate the bubble chart
+  Plotly.newPlot('bubble', dataBubble, layoutBubble);
+}
+
+//helper to make bar chart
+function makeBar(otuIDstring, sampleValues) 
+{
+  //make trace  
+  var traceBar = {
+    //set ID to string  to read as labels
+    x: sampleValues.slice(0, 10),
+    y: otuIDstring.slice(0, 10),
+    mode: 'markers',
+    marker: { size: 16 },
+    text: otuIDstring.slice(0, 10),
+    type: "bar",
+    //this is what is needed to make a horizontal bar 
+    orientation: "h"
+  };
+
+  //this is an array and allows for you to pass  more than one trace at a time
+  var dataBar = [traceBar];
+
+  var layoutBar = {
+    title: "Bar Chart"
+  };
+
+//   //go to the html item with id called plot so know where to place it
+  Plotly.newPlot("bar", dataBar, layoutBar);
+}
+
+//helper to make gauge chart
+function makeGauge()
+{
+
+}
+
+
+//get information from page on the option selected and execute method called optionChanged
+d3.select("#selDataset").on("change", optionChanged(this.value));
+
+// //take value from when option is changed to populate maps using helper functions
+function optionChanged(sampleID)
+{
+  samples.forEach(patientSample =>
+    {
+      // if the id in the array matches the Id that was brought in, call bar and bubble
+      if(sampleID === patientSample.id)
+      {
+        //declare empty array to store the ids and string version of ID
+        var otuIDs = [];
+        var otuIDstring = [];
+        //change all OTU ids to strings to use in bargraph
+        for (i = 0; i < patientSample.otu_ids.length; i++) 
+        {
+          //put OTU in front of the ID and put to string
+          var tempID = patientSample.otu_ids[i].toString();
+          //push to array
+          otuIDs.push(tempID);
+          otuIDstring.push("OTU " + tempID);
+        }
+      
+        //labels
+        var otuLabels = patientSample.otu_labels;
+      
+        //values
+        var sampleValues = patientSample.sample_values;
+        makeBar(otuIDstring, sampleValues);
+        makeBubble(otuIDs, otuLabels, sampleValues);
+      }
+    })
+    //populate meta data using forEach
+  sampleMetadata.forEach(patientMetaData =>
+    {
+      // if id matches, call the metadatafunction
+      if (sampleID === patientMetaData.id.toString())
+      {
+        printMetadata(patientMetaData);
+      }
+    })
+}
