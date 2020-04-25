@@ -1,7 +1,7 @@
 var samples = [];
 var sampleMetadata = [];
 //use d3 to read in json
-d3.json("/samples.json", function (data) {
+d3.json("./samples.json", function (data) {
   //sample data
   samples = data.samples;
   //metadata data
