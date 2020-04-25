@@ -88,11 +88,11 @@ function makeBar(otuIDstring, sampleValues) {
   //make trace  
   var traceBar = {
     //set ID to string  to read as labels
-    x: sampleValues.slice(0, 10),
-    y: otuIDstring.slice(0, 10),
+    x: sampleValues.slice(0, 10).reverse(),
+    y: otuIDstring.slice(0, 10).reverse(),
     mode: 'markers',
     marker: { size: 16 },
-    text: otuIDstring.slice(0, 10),
+    text: otuIDstring.slice(0, 10).reverse(),
     type: "bar",
     //this is what is needed to make a horizontal bar 
     orientation: "h"
