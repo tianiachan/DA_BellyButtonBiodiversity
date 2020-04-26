@@ -1,13 +1,13 @@
 var samples = [];
 var sampleMetadata = [];
 //use d3 to read in json
-d3.json("/samples.json", function (data) {
+d3.json("samples.json", function (data) {
   //sample data
   samples = data.samples;
   //metadata data
   sampleMetadata = data.metadata;
   //populate dropdown with IDs
-  // var optionID = [];
+  var optionID = [];
   //get dropdown menu on html
   var dropOption = d3.select("#selDataset");
   // default option
@@ -23,7 +23,7 @@ d3.json("/samples.json", function (data) {
       .text(sample.id)
       .attr("value", sample.id);
     // append ids for future use?
-    // optionID.push(sample.id);
+    optionID.push(sample.id);
   });
 });
 
@@ -105,12 +105,13 @@ function makeBar(otuIDstring, sampleValues) {
     title: "Bar Chart"
   };
 
-  //   //go to the html item with id called plot so know where to place it
+    //go to the html item with id called plot so know where to place it
   Plotly.newPlot("bar", dataBar, layoutBar);
 }
 
 //helper to make gauge chart
 function makeGauge(washingF) {
+  // change the value and title as well as range to change how the numbers display
   var data =
     [{
       domain: { x: [0, 1], y: [0, 1] },
@@ -120,13 +121,14 @@ function makeGauge(washingF) {
       mode: "gauge+number",
       gauge: { axis: {range: [0, 10]}}
     }];
-
+    //layout does not need to change unless want to personalize further
   var layout = 
     { 
       width: 600, 
       height: 500, 
       margin: { t: 0, b: 0 } 
     };
+  //initialize n the guage slot of the website
   Plotly.newPlot('gauge', data, layout);
 }
 
@@ -148,6 +150,7 @@ function optionChanged(sampleID) {
         var tempID = patientSample.otu_ids[i].toString();
         //push to array
         otuIDs.push(tempID);
+        //push with the OTU in front to use later
         otuIDstring.push("OTU " + tempID);
       }
 
@@ -156,10 +159,13 @@ function optionChanged(sampleID) {
 
       //values
       var sampleValues = patientSample.sample_values;
+      //call methods to update methods when the drop down changes
       makeBar(otuIDstring, sampleValues);
       makeBubble(otuIDs, otuLabels, sampleValues);
     }
   })
+
+  //another version should make this into a method to be called
   //populate meta data using forEach
   sampleMetadata.forEach(patientMetaData => {
     // if id matches, call the metadatafunction
