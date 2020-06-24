@@ -9,15 +9,15 @@ Ever wonder about what is going on with your belly button but been too afraid to
 
 # Libraries used:
 
-* D3 to read json file
-* Plotly.js for horizontal bar chart, bubble chart, and gauage chart
-* Bootstrap for Jekyll Cayman theme
+* [D3](http://learnjsdata.com/read_data.html) to read json file
+* Plotly.js for [horizontal bar chart](https://plotly.com/python/horizontal-bar-charts/), [bubble chart](https://plotly.com/python/bubble-charts/), and [gauage chart](https://plotly.com/python/gauge-charts/)
+* Bootstrap for [Jekyll Cayman theme](https://jekyllthemes.io/theme/jekyll-cayman-theme)
 
 # Tools used:
 
 * Github to host [link](https://tianiachan.github.io/DA_BellyButtonBiodiversity/)
-* VSCode as IDE
-* Notepad++ to view program requirements
+* [Visual Studio Code](https://code.visualstudio.com/) as IDE
+* [Notepad++](https://notepad-plus-plus.org/downloads/) to view program requirements
 
 # Source:
 Hulcr, J. et al.(2012) A Jungle in There: Bacteria in Belly Buttons are Highly Diverse, but Predictable. Retrieved from: [http://robdunnlab.com/projects/belly-button-biodiversity/results-and-data/](http://robdunnlab.com/projects/belly-button-biodiversity/results-and-data/)
