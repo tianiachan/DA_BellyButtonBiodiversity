@@ -10,7 +10,7 @@ Ever wonder about what is going on with your belly button but been too afraid to
 # Libraries used:
 
 * [D3](http://learnjsdata.com/read_data.html) to read json file
-* Plotly.js for [horizontal bar chart](https://plotly.com/python/horizontal-bar-charts/), [bubble chart](https://plotly.com/python/bubble-charts/), and [gauage chart](https://plotly.com/python/gauge-charts/)
+* Plotly.js for [horizontal bar chart](https://plotly.com/python/horizontal-bar-charts/), [bubble chart](https://plotly.com/python/bubble-charts/), and [gauge chart](https://plotly.com/python/gauge-charts/)
 * Bootstrap for [Jekyll Cayman theme](https://jekyllthemes.io/theme/jekyll-cayman-theme)
 
 # Tools used:
