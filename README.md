@@ -3,6 +3,7 @@
 Ever wonder about what is going on with your belly button but been too afraid to ask? We don't pay attention to our belly buttons until there is a cause for concern. We know the basics of what happens when we are born and don't usually pay attention besides that. As an ex bio major turned aspiring data analyst, I had the pleasure to utilize this data set to find out. 
 
 # What this is:
+<img src = "https://github.com/tianiachan/DA_BellyButtonBiodiversity/blob/master/bellybuttonbiodiversityimg.JPG">
 
 * Interactive dashboard designed to study [Belly Button Biodiversity dataset](http://robdunnlab.com/projects/belly-button-biodiversity/) which explores some of the microbial species
 (operational taxonomic units (OTU))
